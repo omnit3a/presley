@@ -1,0 +1,6 @@
+(load "std/base.pre")
+
+(def-func (print lst)
+  (let out (reverse lst))
+  (map write out)
+)
