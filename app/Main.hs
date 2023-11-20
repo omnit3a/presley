@@ -255,11 +255,10 @@ eval env form@(List (Atom "case" : key : clauses)) =
         then liftM last (mapM (eval env) exprs)
         else eval env $ List (Atom "case" : key : tail clauses)
     _  -> throwError $ BadSpecialForm "ill-formed case expression: " form
-eval env (List [Atom "set", Atom var, form]) = eval env form >>= setVar env var
-eval env (List [Atom "define", Atom var, form]) = eval env form >>= defineVar env var
-eval env (List (Atom "define" : List (Atom var : params) : body)) =
+eval env (List [Atom "let", Atom var, form]) = eval env form >>= defineVar env var
+eval env (List (Atom "def-func" : List (Atom var : params) : body)) =
   makeNormalFunc env params body >>= defineVar env var
-eval env (List (Atom "define" : DottedList (Atom var : params) varargs : body)) =
+eval env (List (Atom "def-func" : DottedList (Atom var : params) varargs : body)) =
    makeVarArgs varargs env params body >>= defineVar env var
 eval env (List (Atom "lambda" : List params : body)) =
    makeNormalFunc env params body
