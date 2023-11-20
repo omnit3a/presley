@@ -1,8 +1,8 @@
 (load "std/base.pre")
 
-(def-func (print-std args)
+(def-func (print-line args)
   (let file (open-output-file "/dev/stdout"))
-  (map (lambda (x) (write x file)) (reverse args))
+  (map (lambda (x) (write-line x file)) (reverse args))
   (close-output-port file)
   #t
 )
