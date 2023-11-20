@@ -39,3 +39,11 @@
 (def-func (filter pred lst)
   (foldr (lambda (x y) (if (pred x) (cons x y) y)) '() lst)
 )
+
+(def-func (seq start end lst)
+  (let out (reverse (cons start (reverse lst))))
+  (if (< (+ start 1) end)
+      (seq (+ start 1) end out)
+      out
+  )
+)
