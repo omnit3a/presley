@@ -336,6 +336,7 @@ ioPrimitives = [("apply", applyProc),
                 ("close-output-port", closePort),
                 ("read", readProc),
                 ("write", writeProc),
+                ("write-line", writeLnProc),
                 ("read-contents", readContents),
                 ("read-all", readAll)]
 
@@ -352,7 +353,11 @@ readProc [Port port] = liftIO (hGetLine port) >>= liftThrows . readExpr
 
 writeProc :: [LispVal] -> IOThrowsError LispVal
 writeProc [obj]            = writeProc [obj, Port stdout]
-writeProc [obj, Port port] = liftIO $ hPrint port obj >> return (Bool True)
+writeProc [obj, Port port] = liftIO $ hPutStr port (show obj) >> return (Bool True)
+
+writeLnProc :: [LispVal] -> IOThrowsError LispVal
+writeLnProc [obj]            = writeLnProc [obj, Port stdout]
+writeLnProc [obj, Port port] = liftIO $ hPrint port obj >> return (Bool True)
 
 readContents :: [LispVal] -> IOThrowsError LispVal
 readContents [String filename] = liftM String $ liftIO $ readFile filename
