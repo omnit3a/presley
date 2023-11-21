@@ -168,7 +168,7 @@ readExpr = readOrThrow parseExpr
 readExprList = readOrThrow (endBy parseExpr spaces)
 
 showVal :: LispVal -> String
-showVal (String contents) = "\"" ++ contents ++ "\""
+showVal (String contents) = contents
 showVal (Atom name) = name
 showVal (Number contents) = show contents
 showVal (Complex c) = show c

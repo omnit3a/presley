@@ -1,22 +1,29 @@
 (load "std/base.pre")
 
-(def-func (std-dump args)
+(def-func (std-print args)
   (let file (open-output-file "/dev/stdout"))
-  (map (lambda (x) (write-line x file)) (reverse args))
+  (map (lambda (x) (write x file)) (reverse args))
   (close-output-port file)
-  #t
+  (write " ")
+)
+
+(def-func (std-print-line args)
+  (let file (open-output-file "/dev/stdout"))
+  (map (lambda (x) (write x file)) (reverse args))
+  (close-output-port file)
+  (write-line "")
 )
 
 (def-func (std-error args)
   (let file (open-output-file "/dev/stderr"))
   (map (lambda (x) (write x file)) (reverse args))
   (close-output-port file)
-  #t
+  (write-line "")
 )
 
 (def-func (std-read)
   (let file (open-input-file "/dev/stdin"))
   (let out (read file))
   (close-input-port file)
-  out
+  (out)
 )
