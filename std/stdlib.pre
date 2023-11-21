@@ -1,2 +1,0 @@
-(load "std/base.pre")
-(load "std/inout.pre")
