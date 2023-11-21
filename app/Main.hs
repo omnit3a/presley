@@ -2,6 +2,7 @@ module Main where
 
 import Control.Monad
 import Control.Monad.Error
+import Data.Bool (bool)
 import Data.Bits
 import Data.Array
 import Data.Char
@@ -346,8 +347,11 @@ ioPrimitives = [("apply", applyProc),
                 ("read-contents", readContents),
                 ("read-all", readAll)]
 
+ifM :: Monad m => m Bool -> m a -> m a -> m a
+ifM p t f = p >>= bool f t
+
 fileExistsProc :: [LispVal] -> IOThrowsError LispVal
-fileExistsProc [String filename] = liftIO $ doesFileExist filename >> return (Bool True) 
+fileExistsProc [String filename] = liftIO $ ifM (doesFileExist filename) (return (Bool True)) (return (Bool False))
 fileExistsProc _  	    	 = return $ Bool False
 
 makePort :: IOMode -> [LispVal] -> IOThrowsError LispVal
