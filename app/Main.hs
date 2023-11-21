@@ -12,6 +12,7 @@ import Data.Ratio
 import Numeric
 import System.Environment
 import System.IO
+import System.Directory
 import Text.ParserCombinators.Parsec hiding (spaces1)
 
 data LispVal = Atom String
@@ -334,6 +335,7 @@ primitives = [("+", numericBinop (+)),
 
 ioPrimitives :: [(String, [LispVal] -> IOThrowsError LispVal)]
 ioPrimitives = [("apply", applyProc),
+	        ("file-exists?", fileExistsProc),
                 ("open-input-file", makePort ReadMode),
                 ("open-output-file", makePort WriteMode),
                 ("close-input-port", closePort),
@@ -343,6 +345,10 @@ ioPrimitives = [("apply", applyProc),
                 ("write-line", writeLnProc),
                 ("read-contents", readContents),
                 ("read-all", readAll)]
+
+fileExistsProc :: [LispVal] -> IOThrowsError LispVal
+fileExistsProc [String filename] = liftIO $ doesFileExist filename >> return (Bool True) 
+fileExistsProc _  	    	 = return $ Bool False
 
 makePort :: IOMode -> [LispVal] -> IOThrowsError LispVal
 makePort mode [String filename] = liftM Port $ liftIO $ openFile filename mode

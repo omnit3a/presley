@@ -28,6 +28,6 @@ executable presley
         -fglasgow-exts
     main-is:          Main.hs
     
-    build-depends:    base ^>=4.15.1.0, parsec, mtl, array
+    build-depends:    base ^>=4.15.1.0, parsec, mtl, array, directory
     hs-source-dirs:   app
     default-language: Haskell2010
