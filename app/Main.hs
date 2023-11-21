@@ -2,6 +2,7 @@ module Main where
 
 import Control.Monad
 import Control.Monad.Error
+import Data.Bits
 import Data.Array
 import Data.Char
 import Data.Complex
@@ -298,6 +299,7 @@ primitives = [("+", numericBinop (+)),
               ("*", numericBinop (*)),
               ("/", numericBinop div),
               ("mod", numericBinop mod),
+              ("pow", numericBinop (^)),
               ("quotient", numericBinop quot),
               ("remainder", numericBinop rem),
               ("symbol?", unaryOp symbolp),
@@ -315,6 +317,8 @@ primitives = [("+", numericBinop (+)),
               ("<=", numBoolBinop (<=)),
               ("&&", boolBoolBinop (&&)),
               ("||", boolBoolBinop (||)),
+              ("^^", numericBinop (xor)),
+              ("!", unaryOp notp),
               ("string=?", strBoolBinop (==)),
               ("string<?", strBoolBinop (<)),
               ("string>?", strBoolBinop (>)),
@@ -421,6 +425,10 @@ boolp   _          = return $ Bool False
 listp   (List _)   = return $ Bool True
 listp   (DottedList _ _) = return $ Bool True
 listp   _          = return $ Bool False
+
+notp (Bool True)  = return $ Bool False
+notp (Bool False) = return $ Bool True
+notp _            = return $ Bool False
 
 string2symbol (String x) = return $ Atom x
 string2symbol s = throwError $ TypeMismatch "string" s
