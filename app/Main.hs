@@ -337,6 +337,7 @@ primitives = [("+", numericBinop (+)),
 ioPrimitives :: [(String, [LispVal] -> IOThrowsError LispVal)]
 ioPrimitives = [("apply", applyProc),
 	        ("file-exists?", fileExistsProc),
+		("remove-file", removeFileProc),
                 ("open-input-file", makePort ReadMode),
                 ("open-output-file", makePort WriteMode),
                 ("close-input-port", closePort),
@@ -351,8 +352,16 @@ ifM :: Monad m => m Bool -> m a -> m a -> m a
 ifM p t f = p >>= bool f t
 
 fileExistsProc :: [LispVal] -> IOThrowsError LispVal
-fileExistsProc [String filename] = liftIO $ ifM (doesFileExist filename) (return (Bool True)) (return (Bool False))
+fileExistsProc [String filename] = liftIO $ ifM (doesFileExist filename)
+	       	       		   	    	(return $ Bool True)
+						(return $ Bool False)
 fileExistsProc _  	    	 = return $ Bool False
+
+removeFileProc :: [LispVal] -> IOThrowsError LispVal
+removeFileProc [String filename] = liftIO $ ifM (doesFileExist filename)
+	       	       		   	    	(removeFile filename >> return (Bool True))
+						(return $ Bool False)
+removeFileProc _       		 = return $ Bool False
 
 makePort :: IOMode -> [LispVal] -> IOThrowsError LispVal
 makePort mode [String filename] = liftM Port $ liftIO $ openFile filename mode

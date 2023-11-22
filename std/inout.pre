@@ -1,26 +1,5 @@
 (load "std/base.pre")
 
-(def-func (std-print args)
-  (let file (open-output-file "/dev/stdout"))
-  (map (lambda (x) (write x file)) (reverse args))
-  (close-output-port file)
-  (write " ")
-)
-
-(def-func (std-print-line args)
-  (let file (open-output-file "/dev/stdout"))
-  (map (lambda (x) (write x file)) (reverse args))
-  (close-output-port file)
-  (write-line "")
-)
-
-(def-func (std-read)
-  (let file (open-input-file "/dev/stdin"))
-  (let out (read file))
-  (close-input-port file)
-  (out)
-)
-
 (def-func (file-print filename args)
   (if (file-exists? filename)
     ((let file (open-output-file filename))

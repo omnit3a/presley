@@ -36,12 +36,7 @@
 (def-func (list . objs) objs)
 (def-func (curry func arg1) (lambda (arg) (apply func (cons arg1 (list arg)))))
 
-(def-func (id obj) obj)
-(def-func (and . lst) (fold && #t lst))
-(def-func (or . lst) (fold || #f lst))
-(def-func (not x) (if x #t #f))
-(def-func (mem-helper pred op) (lambda (acc next) (if (and (not acc) (pred (op next))) next acc)))
-(def-func (member obj lst) (fold (mem-helper (curry equal? obj) id) #f lst))
+(def-func (length lst)        (fold (lambda (x y) (+ x 1)) 0 lst))
 
 (def-func (map func lst)
   (foldr (lambda (x y) (cons (func x) y)) '() lst)
