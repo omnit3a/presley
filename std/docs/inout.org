@@ -1,0 +1,21 @@
+#+title: "std/inout.pre" documentation
+#+author: omnit3a
+#+date: 2023-11-25
+
+#+startup: content
+
+* (file-print filename args)
+Checks if <filename> exists. If it doesn't,
+print "File does not exist" to the command line.
+Otherwise, Prints a list of arguments
+to the specified file, one by one.
+* (file-print-ln filename args)
+Checks if <filename> exists. If it doesn't,
+print "File does not exist" to the command line.
+Otherwise, Prints a list of arguments
+to the specified file, one by one.
+Prints a newline to the file when complete.
+* (file-read filename)
+Checks if <filename> exists. If it doesn't, print
+"File does not exist" to the command line.
+Otherwise, reads input from <filename>.

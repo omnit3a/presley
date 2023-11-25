@@ -10,7 +10,7 @@
   (file-exists? filename)
 )
 
-(def-func (file-print-line filename args)
+(def-func (file-print-ln filename args)
   (if (file-exists? filename)
     ((let file (open-output-file filename))
      (map (lambda (x) ((write x file) (write " " file))) (reverse args))
